@@ -1,20 +1,22 @@
 <template>
 
-  <base-card>
-
-</base-card>
+<li>
+  <span :class="highlight"> {{name }}</span> rated the learning experience
+  <span :class="ratingClass"> {{rating}} </span>
+</li>
   
 </template>
 
 <script>
 export default {
-  data()
+  props:['name','rating'],
+ computed:{
+  ratingClass()
   {
-    return {
-
-
-    };
+    return 'highlight rating--' + this.rating;
   },
+  },
+ 
 };
 </script>
 
@@ -36,14 +38,14 @@ p {
 }
 
 .rating--poor {
-  color: #b80056;
+  color: #e8ef0a;
 }
 
 .rating--average {
-  color: #330075;
+  color: #9408e5;
 }
 
 .rating--great {
-  color: #008327;
+  color: #f804af;
 }
 </style>

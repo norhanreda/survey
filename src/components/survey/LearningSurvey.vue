@@ -2,10 +2,10 @@
   <base-card>
   
     <h1>How was your learning exprience ? </h1>
-    <form >
+    <form @submit.prevent="submitExperience" >
       <div class="form-control">
    <label>Your Name: </label>
-    <input type="text" name="name" id="name" v-model="name"    />
+    <input type="text" name="name" id="name" v-model.trim="name"    />
       </div>
        <div class="form-control">
       <label>My learning exprience was...</label>
@@ -32,6 +32,7 @@
       <div class="form-control">
         <base-button type="submit" >Submit </base-button>
     </div>
+    <p v-if="invalidInput">Please enter all fields </p>
 
     </form>
   
@@ -46,9 +47,31 @@ export default {
   {
     return{
      name:'',
-     rating:'',
+     rating:null,
      invalidInput:false,
      };
+  },
+  emits: ['survey-submit'],
+  methods:
+  {
+  submitExperience()
+  {
+      if(this.name==='' || !this.rating )
+     {
+       this.invalidInput=true;
+       return;
+     }
+       
+     this.invalidInput = false;
+     this.$emit('survey-submit', {
+        name: this.name,
+        rating: this.rating,
+      });
+     this.name='';
+     this.rating=null;
+
+  },
+
   },
   
 };
