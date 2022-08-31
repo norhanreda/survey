@@ -51,7 +51,7 @@ export default {
      invalidInput:false,
      };
   },
-  emits: ['survey-submit'],
+  // emits: ['survey-submit'],
   methods:
   {
   submitExperience()
@@ -63,10 +63,24 @@ export default {
      }
        
      this.invalidInput = false;
-     this.$emit('survey-submit', {
-        name: this.name,
-        rating: this.rating,
-      });
+    //  this.$emit('survey-submit', {
+    //     name: this.name,
+    //     rating: this.rating,
+    //   });
+      fetch('https://survey-8b056-default-rtdb.firebaseio.com/survey.json',
+      {
+      method:'POST',
+      headers:{
+       'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+          name:this.name,
+          rating:this.rating,
+      }),
+
+      }
+      
+      );
      this.name='';
      this.rating=null;
 
