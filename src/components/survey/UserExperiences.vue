@@ -5,7 +5,9 @@
       <div>
         <base-button @click="loadData()">Load Submitted Experiences</base-button>
       </div>
-      <ul >
+      <p v-if="isLoading">Loading data please wait.......... </p>
+      <p v-else-if="!isLoading && (!results || results.length===0)">There is no Data</p>
+      <ul  v-else-if="!isLoading && results &&results.length>0">
         <survey-result
           v-for="result in results"
           :key="result.id"
@@ -26,7 +28,7 @@ export default {
   data()
   {
     return {
-      load:false,
+      isLoading:null,
       results:[],
     };
   },
@@ -39,6 +41,7 @@ export default {
    
     loadData()
     {
+      this.isLoading=true;
       fetch('https://survey-8b056-default-rtdb.firebaseio.com/survey.json')
       .then((response)=>{
             if(response.ok)
@@ -47,7 +50,7 @@ export default {
              }
 
       }).then((data)=>{
-
+        this.isLoading=false;
            console.log(data);
           const res=[];
           for(const id in data)
@@ -55,10 +58,16 @@ export default {
               res.push({id:id,name:data[id].name,rating:data[id].rating});
           }
           this.results=res;
-      });
+      },
+     
+      );
 
     },
   },
+ mounted()
+ {
+  this.loadData();
+ }
 
 };
 </script>
