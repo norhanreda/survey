@@ -28,7 +28,7 @@
         <input id="great" name="rating" value="great" v-model="rating" type="radio"   />
        
       </div>
-
+         <p v-if="error"  style="color:red">  {{error}}</p>
       <div class="form-control">
         <base-button type="submit" >Submit </base-button>
     </div>
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+
 import BaseButton from '../UI/BaseButton.vue';
 export default {
   components: { BaseButton },
@@ -49,6 +50,7 @@ export default {
      name:'',
      rating:null,
      invalidInput:false,
+     error:null,
      };
   },
   // emits: ['survey-submit'],
@@ -80,7 +82,25 @@ export default {
 
       }
       
-      );
+      ).then (response =>
+      {
+         
+        if(response.ok)
+        {
+              console.log('done......');
+        }
+        else
+        {
+          throw new Error('Could not save data! ');
+        }
+      }
+        
+
+      ).catch((Error)=>
+      {
+        console.log(Error);
+        this.error=Error.message;
+      });
      this.name='';
      this.rating=null;
 

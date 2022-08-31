@@ -5,7 +5,8 @@
       <div>
         <base-button @click="loadData()">Load Submitted Experiences</base-button>
       </div>
-      <p v-if="isLoading">Loading data please wait.......... </p>
+      <p v-if="isLoading" style="color:pink">Loading data please wait.......... </p>
+      <p v-else-if="error && !isLoading" style="color:red"> {{error}} </p>
       <p v-else-if="!isLoading && (!results || results.length===0)">There is no Data</p>
       <ul  v-else-if="!isLoading && results &&results.length>0">
         <survey-result
@@ -29,6 +30,7 @@ export default {
   {
     return {
       isLoading:null,
+      error:null,
       results:[],
     };
   },
@@ -60,7 +62,14 @@ export default {
           this.results=res;
       },
      
-      );
+      ).catch((error)=>
+           {
+            console.log(error);
+            this.isLoading=false;
+            this.error="faild to fetch data please try again later ........";
+           }
+      )
+      ;
 
     },
   },
